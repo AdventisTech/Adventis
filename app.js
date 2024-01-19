@@ -1,0 +1,32 @@
+const express = require('express');
+const app = express();
+const parser = require('body-parser');
+const path = require('path');
+const cors = require('cors');
+const multer = require('multer');
+const upload = multer();
+
+const userRoute = require('./route/Registration');
+const projectRoute = require('./route/projects');
+const UserprojectRoute = require('./route/Userprojects');
+const Usercontacts = require('./route/contacts');
+const opportunity = require('./route/opportunity');
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(parser.json());
+app.use(express.json());
+app.use(cors());
+app.use(upload.any());
+
+app.use((req,res,next)=>{
+    console.log("app.js file",__dirname);
+    next();
+})
+app.use('',express.static(path.join(__dirname,'time-sheet')));
+
+app.use('/api/user',userRoute);
+app.use('/api/user',projectRoute);
+app.use('/api/user',UserprojectRoute);
+app.use('/api/user',Usercontacts);
+app.use('/api/user',opportunity);
+module.exports = app;
