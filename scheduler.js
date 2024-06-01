@@ -80,5 +80,5 @@ const sendtestEmail = async () => {
 // cron.schedule('20 27 17 * * 5', sendmondayMorningEmail);
 cron.schedule('0 10 * * 1', sendmondayMorningEmail);
 // cron.schedule('0 17 * * 5', sendFridayEveningEmail);
-cron.schedule('42 9 * * 6', sendFridayEveningEmail);
+cron.schedule('0 10 * * 6', sendFridayEveningEmail);
 // cron.schedule('16 15 * * 3', sendtestEmail);
