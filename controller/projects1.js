@@ -68,7 +68,7 @@ exports.submitForm = async (req, res) => {
   try {
 
     const formData = req.body;
-
+   
     // Map properties from formData to match the Mongoose schema
     const mappedData = {
       EmployeeId: formData.EmployeeId,
