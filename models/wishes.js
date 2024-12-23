@@ -18,7 +18,7 @@
   const festivals = [
     {
         name: "Christmas",
-        date: "2024-12-22", // Ensure this matches the current date
+        date: "2024-12-25", // Ensure this matches the current date
         message: "data",
         imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/christmas+gif.gif"
       },
