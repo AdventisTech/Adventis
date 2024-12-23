@@ -6,44 +6,53 @@ const userprojectsModel = require('../models/userprojects');
 const debug = require('debug')('app:controller:userDetailsupdate');
 
 module.exports = {
-RegisterDetails: async (req, res) => {
-
+RegisterDetails : async (req, res) => {
     try {
-      const { EmployeeId, Name, Designation,Department,BOB,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
-
+      console.log('Request body:', req.body); // Log the request body
+  
+      const { EmployeeId, Name, Designation, Department, DOB, DOJ, EmployeeStatus, DOL, Salary, Emailaddress, Password } = req.body;
+  
+      // Check for duplicate EmployeeId
       const existingUser = await UserModel.findOne({ EmployeeId });
-
       if (existingUser) {
-        // Handle duplicate EmployeeId
         return res.status(400).json({ error: 'EmployeeId is already in use' });
       }
-
+  
+      // Check for duplicate Emailaddress
+      const existingEmail = await UserModel.findOne({ Emailaddress });
+      if (existingEmail) {
+        return res.status(400).json({ error: 'Email is already in use' });
+      }
+  
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(Password, salt);
-
-      const result = new UserModel({
-        EmployeeId: EmployeeId,
-        Name: Name,
-        Designation: Designation,
-        Department: Department,
-        BOB: BOB,
-        DOJ:DOJ,
-        EmployeeStatus:EmployeeStatus,
-        DOL:DOL,
-        Salary: Salary,
-        Emailaddress: Emailaddress,
+  
+      // Create and save new user
+      const newUser = new UserModel({
+        EmployeeId,
+        Name,
+        Designation,
+        Department,
+        DOB,
+        DOJ,
+        EmployeeStatus,
+        DOL,
+        Salary,
+        Emailaddress,
         Password: hashedPassword,
       });
-
-      await result.save();
-
-      res.status(201).json({ result, message: 'Successfully Registered' });
+  
+      await newUser.save();
+  
+      res.status(201).json({ result: newUser, message: 'Successfully Registered' });
     } catch (error) {
-
+      console.error('Error in RegisterDetails:', error); // Log the error
       res.status(500).json({ error: 'Internal server error' });
     }
-},
+  },
+  
+  
 LoginDetails: async (req, res) => {
 
   try {
