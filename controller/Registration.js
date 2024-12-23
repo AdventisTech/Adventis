@@ -9,7 +9,7 @@ module.exports = {
 RegisterDetails: async (req, res) => {
 
     try {
-      const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
+      const { EmployeeId, Name, Designation,Department,DOB,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
 
       const existingUser = await UserModel.findOne({ EmployeeId });
 
@@ -27,6 +27,7 @@ RegisterDetails: async (req, res) => {
         Name: Name,
         Designation: Designation,
         Department: Department,
+        DOB:DOB,
         DOJ:DOJ,
         EmployeeStatus:EmployeeStatus,
         DOL:DOL,
@@ -122,7 +123,7 @@ userDetailsdelete: async (req, res) => {
 },
 userDetailsupdate: async (req, res) => {
   try {
-    const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
+    const { EmployeeId, Name, Designation,Department,DOB,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
 
     // Check if a user with the specified EmployeeId exists
     const existingUser = await UserModel.findOne({ EmployeeId });
@@ -142,6 +143,7 @@ userDetailsupdate: async (req, res) => {
     existingUser.Name = Name;
     existingUser.Designation = Designation;
     existingUser.Department = Department;
+    existingUser.DOB = DOB;
     existingUser.DOJ = DOJ;
     existingUser.EmployeeStatus = EmployeeStatus;
     existingUser.DOL = DOL;
