@@ -4,6 +4,7 @@ const employeeSchema = mongoose.Schema({
     Name: { type: String, unique: false, required: [true, 'Name should be mandatory'] },
     Designation: { type: String, unique: false, required: [true, 'Designation should be mandatory'] },
     Department: { type: String, unique: false, required: [true, 'Department should be mandatory'] },
+    DOB:{ type: String, unique: false, required: [true, 'DOB should be mandatory'] },
     DOJ:{ type: String, unique: false, required: [true, 'DOJ should be mandatory'] },
     EmployeeStatus: { type: String, unique: false, required: [true, 'EmployeeStatus should be mandatory'] },
     DOL:{ type: String, unique: false, required: [false, 'DOL should be mandatory'] },

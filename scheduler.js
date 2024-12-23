@@ -84,15 +84,20 @@
 
 
 
-
-
-
-
-
 const cron = require('node-cron');
 const axios = require('axios');
 const sendEmail = require('./models/emailService');
 const festivals = require('./models/wishes');
+
+// Set the timezone globally for Node.js
+process.env.TZ = 'Asia/Kolkata';
+
+// Utility function to get today's date in IST (YYYY-MM-DD)
+const getTodayDateIST = () => {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }))
+    .toISOString()
+    .slice(0, 10);
+};
 
 // Function to fetch emails from the API endpoint
 const fetchEmailsFromAPI = async () => {
@@ -110,14 +115,12 @@ const fetchEmailsFromAPI = async () => {
     return [];
   }
 };
-
-
 const fetchEmailsFromAPI1 = async () => {
   try {
     const response = await axios.get('https://cstimesheet-unsk.onrender.com/api/user/4391');
     if (response.data && Array.isArray(response.data)) {
       return response.data
-        .filter(user => user.EmployeeStatus === "Current" )
+        .filter(user => user.EmployeeStatus === "Current")
         .map(user => user.Emailaddress);
     } else {
       return [];
@@ -128,105 +131,110 @@ const fetchEmailsFromAPI1 = async () => {
   }
 };
 
-// Function to send Monday morning email
-const sendmondayMorningEmail = async () => {
+// Monday Morning Reminder (10:00 AM IST)
+cron.schedule('0 10 * * 1', async () => {
   try {
     const recipients = await fetchEmailsFromAPI();
     if (recipients.length > 0) {
       const subject = 'Reminder: Please Fill Out Your Timesheet for Last Week!';
-      const text = 'Dear Team, This is a friendly reminder to fill out and submit your timesheet for the previous week by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!\n\nPlease update your timesheet here: https://cstimesheet-unsk.onrender.com';
+      const text = 'Dear Team, This is a friendly reminder to fill out and submit your timesheet for the previous week by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!';
       sendEmail(recipients, subject, text);
     }
   } catch (error) {
     console.error('Error sending Monday morning email:', error);
   }
-};
+});
 
-// Function to send Friday evening email
-const sendFridayEveningEmail = async () => {
+// Friday Evening Reminder (5:00 PM IST)
+cron.schedule('0 17 * * 5', async () => {
   try {
     const recipients = await fetchEmailsFromAPI();
     if (recipients.length > 0) {
       const subject = 'Reminder: Please Fill Out Your Timesheet for This Week!';
-      const text = 'Dear Team, This is a friendly reminder to fill out and submit your weekly timesheet by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!\n\nPlease update your timesheet here: https://cstimesheet-unsk.onrender.com';
+      const text = 'Dear Team, This is a friendly reminder to fill out and submit your weekly timesheet by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!';
       sendEmail(recipients, subject, text);
     }
   } catch (error) {
     console.error('Error sending Friday evening email:', error);
   }
-};
+});
 
-// Function to send test email
-const sendtestEmail = async () => {
+// Festival Emails (12:00 AM IST)
+cron.schedule('1 1 * * *', async () => {
   try {
-    const recipients = await fetchEmailsFromAPI();
-    if (recipients.length > 0) {
-      const subject = 'Reminder: Please Fill Out Your Timesheet (Test mail)';
-      const text = 'Dear Team, This is a friendly reminder to fill out and submit your weekly timesheet by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!\n\nPlease update your timesheet here: https://cstimesheet-unsk.onrender.com';
-      sendEmail(recipients, subject, text);
-    }
-  } catch (error) {
-    console.error('Error sending test email:', error);
-  }
-};
-
-// Set the timezone to Indian Standard Time (IST)
-process.env.TZ = 'Asia/Kolkata';
-
-// Schedule the cron jobs in IST
-cron.schedule('0 10 * * 1', sendmondayMorningEmail); // 10:00 AM IST on Monday
-cron.schedule('0 17 * * 5', sendFridayEveningEmail); // 5:00 PM IST on Friday
-
-
-
-
-// Function to send festival emails
-const sendFestivalEmails = async () => {
-  try {
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD format
-
-
-    const festival = festivals.find(f => f.date === today);
- 
+    const todayIST = getTodayDateIST();
+    const festival = festivals.find(f => f.date === todayIST);
 
     if (festival) {
-      const recipients = await fetchEmailsFromAPI1(); // Fetching recipients
-
-
+      const recipients = await fetchEmailsFromAPI1();
       if (recipients.length > 0) {
-        const subject = `Happy ${festival.name}! 🎉`; // Email subject
-
-        // Plain text email content
-        const text = `
-          ${festival.name} - May this festive season bring peace, love, and happiness to your home.
-
-          Wishing you and your loved ones a joyful ${festival.name}. May this day bring peace, happiness, and prosperity to your home!
-        `;
-
-        // HTML email content with embedded image
+        const subject = `Happy ${festival.name}! 🎉`;
+        const text = `${festival.name} - May this festive season bring peace, love, and happiness to your home.`;
         const html = `
           <div style="font-family: Arial, sans-serif; text-align: center; background-color: #f9f9f9; padding: 20px;">
             <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-              <h1 style="color: #333;"> Happy ${festival.name}</h1>
+              <h1 style="color: #333;">Happy ${festival.name}!</h1>
               <p style="color: #555; font-size: 16px; margin: 20px 0;">
                 Wishing you and your loved ones a joyful ${festival.name}. May this day bring peace, happiness, and prosperity to your home!
               </p>
-              <img src="${festival.imageUrl}" alt="Image of ${festival.name}" style="width: 100%; max-width: 600px; border-radius: 10px; margin-top: 20px;">
+              <img src="${festival.imageUrl}" alt="${festival.name}" style="width: 100%; max-width: 600px; border-radius: 10px;">
             </div>
           </div>
         `;
-        // Send the email with both plain text and HTML
         await sendEmail(recipients, subject, text, html);
-        console.log("Festival email sent successfully"); // Debugging
-      } else {
-        console.log("No recipients found for the festival email"); // Debugging
+        console.log("Festival email sent successfully.");
       }
     } else {
-      console.log("No festival found for today"); // Debugging
+      console.log("No festival today.");
     }
   } catch (error) {
-    console.error("Error sending festival emails:", error); // Log any errors
+    console.error("Error sending festival emails:", error);
   }
-};
-cron.schedule('0 0 * * *', sendFestivalEmails); // 12:00 AM every day
-// cron.schedule('05 16 * * *', sendFestivalEmails); // 12:00 AM every day
+});
+
+// Birthday Emails (12:00 AM IST)
+cron.schedule('1 1 * * *', async () => {
+  try {
+    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const todayMonthDay = `${today.getMonth() + 1}-${today.getDate()}`; // MM-DD format
+
+    const response = await axios.get('https://cstimesheet-unsk.onrender.com/api/user/4391');
+    const employees = response.data;
+
+    if (Array.isArray(employees)) {
+      const birthdayEmployees = employees.filter(employee => {
+        if (employee.EmployeeStatus === "Current" && employee.DOJ) {
+          const [year, month, day] = employee.DOJ.split('-');
+          const dojMonthDay = `${parseInt(month)}-${parseInt(day)}`;
+          return dojMonthDay === todayMonthDay;
+        }
+        return false;
+      });
+
+      if (birthdayEmployees.length > 0) {
+        for (const employee of birthdayEmployees) {
+          const subject = `Happy Birthday ${employee.Name}! 🎉`;
+          const text = `Wishing you a fantastic birthday filled with joy, laughter, and all the things you love.`;
+          const html = `
+            <div style="font-family: Arial, sans-serif; text-align: center; background-color: #f9f9f9; padding: 20px;">
+              <div style="background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <h1 style="color: #333;">Happy Birthday ${employee.Name}! 🎉</h1>
+                <p style="color: #555; font-size: 16px; margin: 20px 0;">
+                  Wishing you a fantastic birthday filled with joy, laughter, and all the things you love.
+                </p>
+              </div>
+            </div>
+          `;
+          await sendEmail([employee.Emailaddress], subject, text, html);
+          console.log(`Birthday email sent to ${employee.Name}.`);
+        }
+      } else {
+        console.log("No birthdays today.");
+      }
+    }
+  } catch (error) {
+    console.error("Error sending birthday emails:", error);
+  }
+});
+
+

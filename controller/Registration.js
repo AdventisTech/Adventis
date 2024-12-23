@@ -6,10 +6,10 @@ const userprojectsModel = require('../models/userprojects');
 const debug = require('debug')('app:controller:userDetailsupdate');
 
 module.exports = {
-  RegisterDetails: async (req, res) => {
+RegisterDetails: async (req, res) => {
 
     try {
-      const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
+      const { EmployeeId, Name, Designation,Department,BOB,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
 
       const existingUser = await UserModel.findOne({ EmployeeId });
 
@@ -27,6 +27,7 @@ module.exports = {
         Name: Name,
         Designation: Designation,
         Department: Department,
+        BOB: BOB,
         DOJ:DOJ,
         EmployeeStatus:EmployeeStatus,
         DOL:DOL,
@@ -42,9 +43,7 @@ module.exports = {
 
       res.status(500).json({ error: 'Internal server error' });
     }
-  },
-
-
+},
 LoginDetails: async (req, res) => {
 
   try {
@@ -64,18 +63,18 @@ LoginDetails: async (req, res) => {
           err: err
       });
   }
-},   
-  LoginDetailsget: async (req, res) => {
+},
+LoginDetailsget: async (req, res) => {
             try{
              const result = await UserModel.find();
-             res.status(200).json(result);
-             return res
+             
+             return res.status(200).json(result);
             }catch(err){
              res.status(400).json({
                  err:err
               })
             }
-  },
+},
 forgotPassword : async (req, res) => {
   try {
     const { Emailaddress } = req.body;
@@ -121,12 +120,10 @@ userDetailsdelete: async (req, res) => {
           err:err
       })
     }
-  },
-
-
+},
 userDetailsupdate: async (req, res) => {
   try {
-    const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
+    const { EmployeeId, Name, Designation,Department,BOB,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
 
     // Check if a user with the specified EmployeeId exists
     const existingUser = await UserModel.findOne({ EmployeeId });
@@ -146,6 +143,7 @@ userDetailsupdate: async (req, res) => {
     existingUser.Name = Name;
     existingUser.Designation = Designation;
     existingUser.Department = Department;
+    existingUser.BOB = BOB;
     existingUser.DOJ = DOJ;
     existingUser.EmployeeStatus = EmployeeStatus;
     existingUser.DOL = DOL;
@@ -160,6 +158,5 @@ userDetailsupdate: async (req, res) => {
 
     res.status(500).json({ error: 'Internal server error' });
   }
-}
-
+},
 }
