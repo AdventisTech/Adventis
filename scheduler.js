@@ -203,8 +203,8 @@ cron.schedule('1 1 * * *', async () => {
 
     if (Array.isArray(employees)) {
       const birthdayEmployees = employees.filter(employee => {
-        if (employee.EmployeeStatus === "Current" && employee.DOJ) {
-          const [year, month, day] = employee.DOJ.split('-');
+        if (employee.EmployeeStatus === "Current" && employee.DOB) {
+          const [year, month, day] = employee.DOB.split('-');
           const dojMonthDay = `${parseInt(month)}-${parseInt(day)}`;
           return dojMonthDay === todayMonthDay;
         }
