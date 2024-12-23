@@ -6,53 +6,43 @@ const userprojectsModel = require('../models/userprojects');
 const debug = require('debug')('app:controller:userDetailsupdate');
 
 module.exports = {
-RegisterDetails : async (req, res) => {
+RegisterDetails: async (req, res) => {
+
     try {
-      console.log('Request body:', req.body); // Log the request body
-  
-      const { EmployeeId, Name, Designation, Department, DOB, DOJ, EmployeeStatus, DOL, Salary, Emailaddress, Password } = req.body;
-  
-      // Check for duplicate EmployeeId
+      const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL, Salary, Emailaddress, Password } = req.body;
+
       const existingUser = await UserModel.findOne({ EmployeeId });
+
       if (existingUser) {
+        // Handle duplicate EmployeeId
         return res.status(400).json({ error: 'EmployeeId is already in use' });
       }
-  
-      // Check for duplicate Emailaddress
-      const existingEmail = await UserModel.findOne({ Emailaddress });
-      if (existingEmail) {
-        return res.status(400).json({ error: 'Email is already in use' });
-      }
-  
+
       // Hash the password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(Password, salt);
-  
-      // Create and save new user
-      const newUser = new UserModel({
-        EmployeeId,
-        Name,
-        Designation,
-        Department,
-        DOB,
-        DOJ,
-        EmployeeStatus,
-        DOL,
-        Salary,
-        Emailaddress,
+
+      const result = new UserModel({
+        EmployeeId: EmployeeId,
+        Name: Name,
+        Designation: Designation,
+        Department: Department,
+        DOJ:DOJ,
+        EmployeeStatus:EmployeeStatus,
+        DOL:DOL,
+        Salary: Salary,
+        Emailaddress: Emailaddress,
         Password: hashedPassword,
       });
-  
-      await newUser.save();
-  
-      res.status(201).json({ result: newUser, message: 'Successfully Registered' });
+
+      await result.save();
+
+      res.status(201).json({ result, message: 'Successfully Registered' });
     } catch (error) {
-      console.error('Error in RegisterDetails:', error); // Log the error
+
       res.status(500).json({ error: 'Internal server error' });
     }
-  },
-  
-  
+},
 LoginDetails: async (req, res) => {
 
   try {
@@ -132,7 +122,7 @@ userDetailsdelete: async (req, res) => {
 },
 userDetailsupdate: async (req, res) => {
   try {
-    const { EmployeeId, Name, Designation,Department,BOB,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
+    const { EmployeeId, Name, Designation,Department,DOJ,EmployeeStatus,DOL ,Salary, Emailaddress, Password } = req.body;
 
     // Check if a user with the specified EmployeeId exists
     const existingUser = await UserModel.findOne({ EmployeeId });
@@ -152,7 +142,6 @@ userDetailsupdate: async (req, res) => {
     existingUser.Name = Name;
     existingUser.Designation = Designation;
     existingUser.Department = Department;
-    existingUser.BOB = BOB;
     existingUser.DOJ = DOJ;
     existingUser.EmployeeStatus = EmployeeStatus;
     existingUser.DOL = DOL;
