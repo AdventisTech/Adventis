@@ -222,10 +222,24 @@ cron.schedule('1 1 * * *', async () => {
                 <p style="color: #555; font-size: 16px; margin: 20px 0;">
                   Wishing you a fantastic birthday filled with joy, laughter, and all the things you love.
                 </p>
+                <img src="cid:birthdayImage" 
+                     alt="Birthday Celebration" 
+                     style="width: 100%; max-width: 600px; border-radius: 10px; margin-top: 20px;">
               </div>
             </div>
           `;
-          await sendEmail([employee.Emailaddress], subject, text, html);
+
+          // Attach the image inline using Content-ID (CID)
+          const attachments = [
+            {
+              filename: 'birthday.jpg',
+              path: 'https://parade.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MjAzMzU3NzQxMzU4NTIzOTgz/happy-birthday-wishes-messages.jpg', // Use the URL as the path
+              cid: 'birthdayImage', // CID to embed the image
+            },
+          ];
+
+          // Send email with both plain text, HTML, and the inline image
+          await sendEmail([employee.Emailaddress], subject, text, html, attachments);
           console.log(`Birthday email sent to ${employee.Name}.`);
         }
       } else {
@@ -236,5 +250,6 @@ cron.schedule('1 1 * * *', async () => {
     console.error("Error sending birthday emails:", error);
   }
 });
+
 
 
