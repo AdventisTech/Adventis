@@ -160,7 +160,7 @@ cron.schedule('0 17 * * 5', async () => {
 });
 
 // Festival Emails (12:00 AM IST)
-cron.schedule('1 1 * * *', async () => {
+cron.schedule('1 8 * * *', async () => {
   try {
     const todayIST = getTodayDateIST();
     const festival = festivals.find(f => f.date === todayIST);
@@ -193,7 +193,7 @@ cron.schedule('1 1 * * *', async () => {
 });
 
 // Birthday Emails (12:00 AM IST)
-cron.schedule('1 1 * * *', async () => {
+cron.schedule('1 8 * * *', async () => {
   try {
     const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
     const todayMonthDay = `${today.getMonth() + 1}-${today.getDate()}`; // MM-DD format
