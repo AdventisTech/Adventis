@@ -233,7 +233,7 @@ cron.schedule('1 8 * * *', async () => {
           const attachments = [
             {
               filename: 'birthday.jpg',
-              path: 'https://parade.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MjAzMzU3NzQxMzU4NTIzOTgz/happy-birthday-wishes-messages.jpg', // Use the URL as the path
+              path: 'https://adventisimages.s3.us-east-2.amazonaws.com/mail/birthday+gif.gif', // Use the URL as the path
               cid: 'birthdayImage', // CID to embed the image
             },
           ];
