@@ -26,7 +26,7 @@
         name: "New Year",
         date: "2025-01-01", // Ensure this matches the current date
         message: "data",
-        imageUrl: "https://static.vecteezy.com/system/resources/thumbnails/047/742/757/small_2x/2025-happy-new-year-background-design-greeting-card-banner-poster-illustration-vector.jpg"
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/newyear+2+gif.gif"
       },
       {
         name: "Easter",
