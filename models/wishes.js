@@ -16,12 +16,7 @@
   
 
   const festivals = [
-    {
-        name: "Christmas",
-        date: "2024-12-25", // Ensure this matches the current date
-        message: "data",
-        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/christmas+gif.gif"
-      },
+
       {
         name: "New Year",
         date: "2025-01-01", // Ensure this matches the current date
@@ -29,12 +24,77 @@
         imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/newyear+2+gif.gif"
       },
       {
+        name: "Pongal",
+        date: "2025-01-14", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/pongal+gif.gif"
+      },
+      {
+        name: "Republic Day",
+        date: "2025-01-26", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/republic+day.png"
+      },
+      {
+        name: "Tamil New Year",
+        date: "2025-04-14", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/tamil+new+year.png"
+      },
+      {
         name: "Easter",
         date: "2025-04-20", // Ensure this matches the current date
         message: "data",
-        imageUrl: "https://img.freepik.com/free-vector/happy-easter-composition-with-traditional-symbols-colorful-eggs-rabbit-ears-spring-flowers-realistic_1284-28034.jpg?t=st=1734776699~exp=1734780299~hmac=e30ac3f5eb4eb8319722bc27f9160d4b131299843b301deae1053359e9fadcb7&w=740"
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/easter.png"
       },
-
+      {
+        name: "May Day",
+        date: "2025-05-01", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/may+day.png"
+      },
+      {
+        name: "Independence Day",
+        date: "2025-08-15", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/independence+day.png"
+      },
+      {
+        name: "krishna jayanthi",
+        date: "2025-08-16", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/krishna+jayanthi.png"
+      },
+      {
+        name: "Vinayagar Chaturthi",
+        date: "2025-08-27", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/ganesh+chaturthi.png"
+      },
+      {
+        name: "Engineer's Day",
+        date: "2025-09-15", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/engineers+day.png"
+      },
+      {
+        name: "Vijayadashami / Dassahra",
+        date: "2025-10-02", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/dussehra.png"
+      },
+      {
+        name: "Diwali",
+        date: "2025-10-20", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/diwali+gif.gif"
+      },
+      {
+        name: "Christmas",
+        date: "2025-12-25", // Ensure this matches the current date
+        message: "data",
+        imageUrl: "https://adventisimages.s3.us-east-2.amazonaws.com/mail/christmas+2025+gif.gif"
+      },
 
   ];
   
