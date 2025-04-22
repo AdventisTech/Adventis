@@ -223,7 +223,7 @@ exports.getFilteredLeaveDetails = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    console.error('Error fetching filtered data:', err);
+   
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -242,7 +242,7 @@ exports.getFilteredLeaveDetails1 = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    console.error('Error fetching filtered data:', err);
+  
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -262,7 +262,7 @@ exports.getFilteredLeaveDetails2 = async (req, res) => {
 
     res.status(200).json(result);
   } catch (err) {
-    console.error('Error fetching today\'s data:', err);
+  
     res.status(500).json({ error: 'Internal server error' });
   }
 };
