@@ -137,7 +137,7 @@ cron.schedule('0 10 * * 1', async () => {
     const recipients = await fetchEmailsFromAPI();
     if (recipients.length > 0) {
       const subject = 'Reminder: Please Fill Out Your Timesheet for Last Week!';
-      const text = 'Dear Team, This is a friendly reminder to fill out and submit your timesheet for the previous week by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!';
+      const text = 'Dear Team, This is a friendly reminder to fill out and submit your timesheet for the previous week by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!\n\nPlease update your timesheet here: https://cstimesheet-unsk.onrender.com';
       sendEmail(recipients, subject, text);
     }
   } catch (error) {
@@ -151,7 +151,7 @@ cron.schedule('0 17 * * 5', async () => {
     const recipients = await fetchEmailsFromAPI();
     if (recipients.length > 0) {
       const subject = 'Reminder: Please Fill Out Your Timesheet for This Week!';
-      const text = 'Dear Team, This is a friendly reminder to fill out and submit your weekly timesheet by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!';
+      const text = 'Dear Team, This is a friendly reminder to fill out and submit your weekly timesheet by the end of the day today. Timely submission helps ensure accurate and timely processing. Thank you for your cooperation!\n\nPlease update your timesheet here: https://cstimesheet-unsk.onrender.com';
       sendEmail(recipients, subject, text);
     }
   } catch (error) {

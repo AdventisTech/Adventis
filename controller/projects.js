@@ -3,7 +3,7 @@ const assetModel = require('../models/projects');
 module.exports = {
   assetDetails: async (req, res) => {
     try {
-      const { ProjectId,Title, Client,ProjectValue,ResourceBudget,ProjectDurationFrom,ProjectDurationTo,Description,PONumber,PODate,departments} = req.body;
+      const { ProjectId,Title, Client,ProjectValue,ResourceBudget,ProjectDurationFrom,ProjectDurationTo,Description,PONumber,PODate,departments,Status} = req.body;
       const result = new assetModel({
         ProjectId:ProjectId,
         Title: Title,
@@ -15,8 +15,8 @@ module.exports = {
         Description: Description,
         PONumber:PONumber,
         PODate:PODate,
-        departments:departments
- 
+        departments:departments,
+        Status:Status
       });
 
       await result.save();

@@ -10,6 +10,7 @@ const Project = mongoose.Schema({
     Description:{ type: String,  required: false },
     PONumber:{ type: String, required: false},
     PODate:{ type: String,  required: false  },
+    Status:{type: String,  required: true},
     departments: [{
         name: { type: String, required: false },
         numEmployees: { type: Number, required: false }
