@@ -192,6 +192,82 @@ exports.Detailsget = async (req, res) => {
   }
 };
 
+// Utility to calculate current financial year
+function getFinancialYear(date = new Date()) {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // Jan = 0
+
+  const startYear = month < 4 ? year - 1 : year;
+  const endYear = startYear + 1;
+
+  return `${startYear}-${endYear}`;
+}
+
+// Controller function
+exports.getFilteredLeaveDetails = async (req, res) => {
+  try {
+    const { employeeId, date } = req.query;
+
+    if (!employeeId) {
+      return res.status(400).json({ error: 'EmployeeId is required' });
+    }
+
+    const targetDate = date ? new Date(date) : new Date();
+    const financialYear = getFinancialYear(targetDate);
+
+    const result = await Form.find({
+      EmployeeId: employeeId,
+      // status: 'Approved',
+      Financialyear: financialYear
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching filtered data:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+exports.getFilteredLeaveDetails1 = async (req, res) => {
+  try {
+    const {  date } = req.query;
+
+
+    const targetDate = date ? new Date(date) : new Date();
+    const financialYear = getFinancialYear(targetDate);
+
+    const result = await Form.find({
+
+      Financialyear: financialYear
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching filtered data:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+exports.getFilteredLeaveDetails2 = async (req, res) => {
+  try {
+    // Get today's date formatted as DD/MM/YYYY
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Months start from 0
+    const yyyy = today.getFullYear();
+    const formattedToday = `${dd}/${mm}/${yyyy}`;
+
+    const result = await Form.find({
+      startdate: formattedToday
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('Error fetching today\'s data:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
 
 exports. mailDetailsupdate = async (req, res) => {
   const { id } = req.params;

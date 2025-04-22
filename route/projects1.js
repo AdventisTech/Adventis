@@ -3,6 +3,9 @@ const router = express.Router();
 const userController = require('../controller/projects1');
 router.post('/Contactsupdate', userController.submitForm);
 router.get('/userleavedetails', userController.Detailsget);
+router.get('/userleavedetails1', userController.getFilteredLeaveDetails);
+router.get('/userleavedetails2', userController.getFilteredLeaveDetails1);
+router.get('/userleavedetails3', userController.getFilteredLeaveDetails2);
 router.put('/maildetailsupdate/:id',userController.mailDetailsupdate);
 router.delete('/maildetailsdelete/:id',userController.mailDetailsdelete)
 // router.get('/api/user/approve/:formId', userController.getApprovalData);

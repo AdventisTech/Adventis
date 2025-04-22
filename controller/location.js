@@ -1,5 +1,6 @@
 
 const locationModel = require('../models/location');
+const moment = require('moment'); 
 module.exports = {
     locationDetailspost: async (req, res) => {
     try {
@@ -20,15 +21,36 @@ module.exports = {
       });
     }
   },
-  locationDetailsget: async (req, res) => {
-    try{
+  // locationDetailsget: async (req, res) => {
+  //   try{
+  //     const result = await locationModel.find();
+  //    res.status(200).json(result);
+  //    return res
+  //    }catch(err){
+  //    res.status(400).json({
+  //        err:err
+  //     })
+  //   }
+  // },
+
+ locationDetailsget : async (req, res) => {
+    try {
+      // Calculate the date 3 months ago
+      const threeMonthsAgo = moment().subtract(1, 'months').toDate();
+  
+      // Fetch all data
       const result = await locationModel.find();
-     res.status(200).json(result);
-     return res
-     }catch(err){
-     res.status(400).json({
-         err:err
-      })
+  
+      // Filter entries with parsed timestamp >= 3 months ago
+      const filteredResult = result.filter(entry => {
+        const entryDate = moment(entry.timestamp, 'YYYY-MM-DD hh:mm:ss A').toDate();
+        return entryDate >= threeMonthsAgo;
+      });
+  
+      res.status(200).json(filteredResult);
+    } catch (err) {
+
+      res.status(400).json({ err });
     }
   },
   locationDetailsupdate: async (req, res) => {

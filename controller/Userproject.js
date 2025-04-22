@@ -38,6 +38,132 @@ module.exports = {
       })
     }
  },
+
+ assetDetailsget1: async (req, res) => {
+  try {
+    const { Name, userid, TodayDate } = req.query; // input from user
+
+    // Parse TodayDate string to a JS Date object
+    const inputDate = new Date(TodayDate);
+
+    // Get date 3 months ago
+    const threeMonthsAgo = new Date(inputDate);
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 1);
+
+    // Convert date range to string if stored as string in DB (yyyy-mm-dd format)
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const startDateStr = formatDate(threeMonthsAgo);
+    const endDateStr = formatDate(inputDate);
+
+    const result = await assetModel.find({
+      Name: Name,
+      userid: userid,
+      TodayDate: {
+        $gte: startDateStr,
+        $lte: endDateStr
+      }
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+},
+assetDetailsget2: async (req, res) => {
+  try {
+    const { Name, userid, TodayDate } = req.query; // input from user
+
+    // Parse TodayDate string to a JS Date object
+    const inputDate = new Date(TodayDate);
+
+    // Get date 3 months ago
+    const threeMonthsAgo = new Date(inputDate);
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+    // Convert date range to string if stored as string in DB (yyyy-mm-dd format)
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const startDateStr = formatDate(threeMonthsAgo);
+    const endDateStr = formatDate(inputDate);
+
+    const result = await assetModel.find({
+      Name: Name,
+      userid: userid,
+      TodayDate: {
+        $gte: startDateStr,
+        $lte: endDateStr
+      }
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+},
+
+assetDetailsget3: async (req, res) => {
+  try {
+    const {Department, status, TodayDate } = req.query; // input from user
+
+    // Parse TodayDate string to a JS Date object
+    const inputDate = new Date(TodayDate);
+
+    // Get date 3 months ago
+    const threeMonthsAgo = new Date(inputDate);
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+    // Convert date range to string if stored as string in DB (yyyy-mm-dd format)
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const startDateStr = formatDate(threeMonthsAgo);
+    const endDateStr = formatDate(inputDate);
+
+    const result = await assetModel.find({
+      status: status,
+      Department: Department,
+      TodayDate: {
+        $gte: startDateStr,
+        $lte: endDateStr
+      }
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+},
+assetDetailsget4: async (req, res) => {
+  try {
+    const {Department, TodayDate } = req.query; // input from user
+
+    // Parse TodayDate string to a JS Date object
+    const inputDate = new Date(TodayDate);
+
+    // Get date 3 months ago
+    const threeMonthsAgo = new Date(inputDate);
+    threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+    // Convert date range to string if stored as string in DB (yyyy-mm-dd format)
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    const startDateStr = formatDate(threeMonthsAgo);
+    const endDateStr = formatDate(inputDate);
+
+    const result = await assetModel.find({
+
+      Department: Department,
+      TodayDate: {
+        $gte: startDateStr,
+        $lte: endDateStr
+      }
+    });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+},
  userprojectupdate: async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
