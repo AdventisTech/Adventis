@@ -8,6 +8,8 @@ router.get('/UserProject1', userController.assetDetailsget1);
 router.get('/UserProject2', userController.assetDetailsget2);
 router.get('/UserProject3', userController.assetDetailsget3);
 router.get('/UserProject4', userController.assetDetailsget4);
+router.get('/UserProject5', userController.assetDetailsget5);
+router.get('/UserProject6', userController.assetDetailsget6);
 router.put('/UserProjectupdate/:id',userController.userprojectupdate);
 router.delete('/UserProjectdelete/:id',userController.userprojectdelete)
 

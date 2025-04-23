@@ -1,5 +1,7 @@
 
 const assetModel = require('../models/userprojects');
+const UserModel = require('../models/Registration');
+const projectModel = require('../models/projects');
 module.exports = {
   // assetDetails: async (req, res) => {
   //   try {
@@ -200,6 +202,170 @@ assetDetailsget4: async (req, res) => {
     res.status(400).json({ err });
   }
 },
+// assetDetailsget5 : async (req, res) => {
+
+//   try {
+//     const { Department } = req.query;
+
+//     // Step 1: Get all current employees in that department
+//     const currentEmployees = await UserModel.find({
+//       Department: Department,
+//       EmployeeStatus: 'Current',
+//     });
+
+//     const activeEmployeeIds = currentEmployees.map(emp => emp.EmployeeId);
+
+//     // Step 2: Use those EmployeeIds to filter asset data
+//     const result = await assetModel.find({
+//       Department: Department,
+//       EmployeeId: { $in: activeEmployeeIds }
+//     });
+
+//     res.status(200).json(result);
+//   } catch (err) {
+//     res.status(400).json({ err });
+//   }
+// },
+assetDetailsget5: async (req, res) => {
+
+  try {
+    const { Department } = req.query;
+
+    // Step 1: Find current employees in that department
+    const currentEmployees = await UserModel.find({
+      Department: Department,   
+      EmployeeStatus: 'Current'
+    });
+
+    // Step 2: Extract their EmployeeIds
+    const currentEmployeeIds = currentEmployees.map(emp => emp.EmployeeId);
+
+
+    // Step 3: Find assets (or related data) only for those EmployeeIds in the same department
+    const result = await assetModel.find({
+      Department: Department,
+      userid: { $in: currentEmployeeIds }
+     
+
+    });
+
+    res.status(200).json(result);
+
+    
+  } catch (err) {
+ 
+    res.status(400).json({ err });
+  }
+},
+
+assetDetailsget6: async (req, res) => {
+
+  try {
+    const { Status } = req.query;
+
+    // Step 1: Find projects with given status
+    const currentProjects = await projectModel.find({ Status: Status });
+
+    // Step 2: Extract ProjectIds
+    const currentProjectIds = currentProjects.map(pro => pro.ProjectId);
+
+
+    // Step 3: Find assets where any ProjectXid matches
+    const assets = await assetModel.find({
+      $or: [
+        { Project1id: { $in: currentProjectIds } },
+        { Project2id: { $in: currentProjectIds } },
+        { Project3id: { $in: currentProjectIds } },
+        { Project4id: { $in: currentProjectIds } },
+        { Project5id: { $in: currentProjectIds } },
+      ]
+    });
+
+    // Step 4: Filter relevant project data from each asset
+    const filteredAssets = assets.map(asset => {
+      let matchedProject = null;
+
+      if (currentProjectIds.includes(asset.Project1id)) {
+        matchedProject = {
+          Name: asset.Name,
+          userid: asset.userid,
+          Project: asset.Project1,
+          Projectid: asset.Project1id,
+          timefrom: asset.Projecttimefrom1,
+          timeto: asset.Projecttimeto1,
+          activity: asset.activity1,
+          totaltime: asset.totaltimeproject1,
+          TodayDate: asset.TodayDate,
+          status: asset.status,
+          billingType: asset.billingType
+        };
+      } else if (currentProjectIds.includes(asset.Project2id)) {
+        matchedProject = {
+          Name: asset.Name,
+          userid: asset.userid,
+          Project: asset.Project2,
+          Projectid: asset.Project2id,
+          timefrom: asset.Projecttimefrom2,
+          timeto: asset.Projecttimeto2,
+          activity: asset.activity2,
+          totaltime: asset.totaltimeproject2,
+          TodayDate: asset.TodayDate,
+          status: asset.status
+        };
+      } else if (currentProjectIds.includes(asset.Project3id)) {
+        matchedProject = {
+          Name: asset.Name,
+          userid: asset.userid,
+          Project: asset.Project3,
+          Projectid: asset.Project3id,
+          timefrom: asset.Projecttimefrom3,
+          timeto: asset.Projecttimeto3,
+          activity: asset.activity3,
+          totaltime: asset.totaltimeproject3,
+          TodayDate: asset.TodayDate,
+          status: asset.status
+        };
+      } else if (currentProjectIds.includes(asset.Project4id)) {
+        matchedProject = {
+          Name: asset.Name,
+          userid: asset.userid,
+          Project: asset.Project4,
+          Projectid: asset.Project4id,
+          timefrom: asset.Projecttimefrom4,
+          timeto: asset.Projecttimeto4,
+          activity: asset.activity4,
+          totaltime: asset.totaltimeproject4,
+          TodayDate: asset.TodayDate,
+          status: asset.status
+        };
+      } else if (currentProjectIds.includes(asset.Project5id)) {
+        matchedProject = {
+          Name: asset.Name,
+          userid: asset.userid,
+          Project: asset.Project5,
+          Projectid: asset.Project5id,
+          timefrom: asset.Projecttimefrom5,
+          timeto: asset.Projecttimeto5,
+          activity: asset.activity5,
+          totaltime: asset.totaltimeproject5,
+          TodayDate: asset.TodayDate,
+          status: asset.status
+        };
+      }
+
+      return matchedProject;
+    }).filter(item => item); // remove nulls
+
+    res.status(200).json(filteredAssets);
+  } catch (err) {
+
+    res.status(400).json({ err });
+  }
+},
+
+
+
+
  userprojectupdate: async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
