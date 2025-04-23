@@ -42,10 +42,19 @@ module.exports = {
         Project4id, Project5id, userid, Department, status, statusdescription, billingType
       } = req.body;
   
-      // Prevent duplicate entry
-      const existing = await assetModel.findOne({ userid, TodayDate });
+      // Check for exact duplicate ignoring TodayDate
+      const existing = await assetModel.findOne({
+        Name, Projecttimefrom1, Projecttimeto1, Projecttimefrom2, Projecttimeto2,
+        Projecttimefrom3, Projecttimeto3, Projecttimefrom4, Projecttimeto4, Projecttimefrom5, Projecttimeto5,
+        TrainingLearing, TrainingLearningtimefrom, TrainingLearningtimeto, Project1, Project2, Project3,
+        Project4, Project5, activity1, activity2, activity3, activity4, activity5, activity6,
+        totaltimeproject1, totaltimeproject2, totaltimeproject3, totaltimeproject4,
+        totaltimeproject5, totalTrainingLearning, totaytotaltime, Project1id, Project2id, Project3id,
+        Project4id, Project5id, userid, Department, status, statusdescription, billingType
+      });
+  
       if (existing) {
-        return res.status(409).json({ message: 'Record already exists for this user today.' });
+        return res.status(409).json({ message: 'Exact data already exists (ignoring date).' });
       }
   
       const result = new assetModel({
@@ -64,6 +73,7 @@ module.exports = {
       res.status(400).json({ err: err.message });
     }
   },
+  
   
   assetDetailsget: async (req, res) => {
     try{
