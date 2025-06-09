@@ -236,6 +236,11 @@ assetDetailsget4: async (req, res) => {
 //     res.status(400).json({ err });
 //   }
 // },
+
+
+// Data Aggregation
+// Data Composition
+
 assetDetailsget5: async (req, res) => {
 
   try {

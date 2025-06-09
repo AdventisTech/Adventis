@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
@@ -28,6 +26,7 @@ const ratingRouter = require('./route/rating');
 const ManagerratingRouter = require('./route/managerrating');
 const locationRouter = require('./route/location');
 const TaskRoute = require('./route/billable');
+const UserTime = require('./route/usertime');
 const ExcelJS = require('exceljs');
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -54,6 +53,7 @@ app.use('/api/user', ratingRouter);
 app.use('/api/user', ManagerratingRouter);
 app.use('/api/user', locationRouter);
 app.use('/api/user', TaskRoute);
+app.use('/api/user', UserTime);
 
 wss.on('connection', (socket) => {
   console.log('A user connected');
