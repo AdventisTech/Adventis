@@ -129,27 +129,22 @@ UserTimeDetailsByUserId1: async (req, res) => {
       return res.status(400).json({ error: "userid and date are required" });
     }
 
-    const formattedDate = new Date(date).toISOString().slice(0, 10); // YYYY-MM-DD
+    // Format the date to match what's stored in the DB
+    const formattedDate = new Date(date).toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-    // Get the date 15 days before the given date
-    const fifteenDaysAgo = new Date(date);
-    fifteenDaysAgo.setDate(fifteenDaysAgo.getDate() - 15);
-    const formattedStartDate = fifteenDaysAgo.toISOString().slice(0, 10);
-
-    // Query for entries within the last 15 days up to the given date
+    // 🔍 Fetch only the exact date match
     const result = await UserTimeModel.findOne({
       userid: userid,
-      TodayDate: { 
-        $gte: formattedStartDate, 
-        $lte: formattedDate 
-      }
+      TodayDate: formattedDate,
     });
 
-    res.status(200).json(result || {}); // return empty object if not found
+    res.status(200).json(result || {}); // Return empty object if not found
   } catch (err) {
-    res.status(400).json({ err: err.message || err });
+    console.error('Error fetching time data:', err);
+    res.status(500).json({ error: err.message || err });
   }
 },
+
 
 
 
