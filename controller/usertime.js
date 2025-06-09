@@ -74,7 +74,25 @@ UserTimeDetailsget: async (req, res) => {
     });
   }
 },
+onlyparticulardate: async (req, res) => {
+  try {
+    const { TodayDate } = req.query;
 
+    if (!TodayDate) {
+      return res.status(400).json({ error: "TodayDate is required" });
+    }
+
+    // Format the input to YYYY-MM-DD (if needed)
+    const formattedDate = new Date(TodayDate).toISOString().split('T')[0];
+
+    // Find exact match for TodayDate
+    const result = await UserTimeModel.find({ TodayDate: formattedDate });
+
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+},
 UserTimeDetailsByUserId: async (req, res) => {
   try {
     const { userid } = req.params;  // assuming userid comes in route param

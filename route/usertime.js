@@ -6,6 +6,7 @@ router.post('/UserTime', usertimeController.UserTimeDetailspost);
 router.get('/UserTimeget', usertimeController.UserTimeDetailsget);
 router.get('/UserTimeget1/:userid', usertimeController.UserTimeDetailsByUserId);
 router.get('/UserTimeget2/:userid', usertimeController.UserTimeDetailsByUserId1);
+router.get('/particulardate', usertimeController.onlyparticulardate);
 router.put('/UserTimeupdate/:id',usertimeController.UserTimeDetailsupdate);
 router.delete('/UserTimedelete/:id',usertimeController.UserTimeDetailsdelete)
 
